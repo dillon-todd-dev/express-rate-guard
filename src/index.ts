@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import type { RateLimitOptions } from '@/types';
-import { MemoryStore } from '@/store';
+import { MemoryStore, RedisStore } from '@/store';
 import { fixedWindow } from '@/strategies/fixed-window';
 
 export { RateLimitOptions } from '@/types';
@@ -17,8 +17,8 @@ export function rateLimit(options: RateLimitOptions) {
     onLimitReached,
   } = options;
 
-  // TODO: swap redis client if present
-  const store = new MemoryStore();
+  // fallback to in-memory store if no Redis client provided
+  const store = redis ? new RedisStore(redis) : new MemoryStore();
 
   return async (
     req: Request,
