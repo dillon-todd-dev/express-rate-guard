@@ -5,9 +5,9 @@ export async function fixedWindow(
   store: Store,
   key: string,
   max: number,
-  windowMs: number,
+  window: number,
 ): Promise<RateLimitInfo & { allowed: boolean }> {
-  const { count, resetAt } = await store.increment(key, windowMs);
+  const { count, resetAt } = await store.increment(key, window);
 
   return {
     allowed: count <= max,

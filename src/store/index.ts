@@ -3,7 +3,7 @@ import type { RateLimitInfo } from '@/types';
 export interface Store {
   increment(
     key: string,
-    windowMs: number,
+    window: number,
   ): Promise<{ count: number; resetAt: number }>;
   get(key: string): Promise<number | null>;
   reset: (key: string) => Promise<void>;
@@ -23,13 +23,13 @@ export class MemoryStore implements Store {
 
   async increment(
     key: string,
-    windowMs: number,
+    window: number,
   ): Promise<{ count: number; resetAt: number }> {
     const now = Math.floor(Date.now() / 1000);
     const entry = this.data.get(key);
 
     if (!entry || now >= entry.resetAt) {
-      const resetAt = now + windowMs;
+      const resetAt = now + window;
       this.data.set(key, { count: 1, resetAt });
       return { count: 1, resetAt };
     }

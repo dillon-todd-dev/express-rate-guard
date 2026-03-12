@@ -8,7 +8,7 @@ export { RateLimitOptions } from '@/types';
 export function rateLimit(options: RateLimitOptions) {
   const {
     max,
-    windowMs,
+    window,
     strategy = 'fixed-window',
     redis,
     keyGenerator = (req: Request) => req.ip ?? 'unknown',
@@ -31,7 +31,7 @@ export function rateLimit(options: RateLimitOptions) {
       let result;
 
       if (strategy === 'fixed-window') {
-        result = await fixedWindow(store, key, max, windowMs);
+        result = await fixedWindow(store, key, max, window);
       } else {
         return next(new Error(`Unknown strategy: ${strategy}`));
       }

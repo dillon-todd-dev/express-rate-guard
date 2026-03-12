@@ -6,8 +6,8 @@ export type Strategy = 'fixed-window' | 'sliding-window' | 'token-bucket';
 export interface RateLimitOptions {
   /** Max number of requests allowed in the window (or max tokens for token-bucket) */
   max: number;
-  /** Time window in milliseconds  */
-  windowMs: number;
+  /** Time window in seconds  */
+  window: number;
   /** Rate limiting strategy. Defaults to 'fixed-window' */
   strategy?: Strategy;
   /** Optional Redis client. Falls back to in-memory store if not provided */
