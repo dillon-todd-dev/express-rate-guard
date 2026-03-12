@@ -79,6 +79,33 @@ describe('MemoryStore', () => {
     });
   });
 
+  describe('set', () => {
+    it('should set a value retrievable by get', async () => {
+      await store.set('key1', 42, 60);
+      const value = await store.get('key1');
+      expect(value).toBe(42);
+    });
+
+    it('should expire after the ttl', async () => {
+      const now = Math.floor(Date.now() / 1000);
+      vi.spyOn(Date, 'now').mockReturnValue(now * 1000);
+
+      await store.set('key1', 10, 5);
+
+      vi.spyOn(Date, 'now').mockReturnValue((now + 6) * 1000);
+
+      const value = await store.get('key1');
+      expect(value).toBeNull();
+    });
+
+    it('should overwrite an existing value', async () => {
+      await store.set('key1', 10, 60);
+      await store.set('key1', 20, 60);
+      const value = await store.get('key1');
+      expect(value).toBe(20);
+    });
+  });
+
   describe('reset', () => {
     it('should remove the key', async () => {
       await store.increment('key1', 60);

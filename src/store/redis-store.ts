@@ -32,6 +32,10 @@ export class RedisStore implements Store {
     return val !== null ? parseInt(val, 10) : null;
   }
 
+  async set(key: string, value: number, ttl: number): Promise<void> {
+    await this.redis.set(key, value, 'EX', ttl);
+  }
+
   async reset(key: string): Promise<void> {
     await this.redis.del(key);
   }

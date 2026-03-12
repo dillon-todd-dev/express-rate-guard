@@ -39,6 +39,11 @@ export class MemoryStore implements Store {
     return now < entry.resetAt ? entry.count : null;
   }
 
+  async set(key: string, value: number, ttl: number): Promise<void> {
+    const now = Math.floor(Date.now() / 1000);
+    this.data.set(key, { count: value, resetAt: now + ttl });
+  }
+
   async reset(key: string): Promise<void> {
     this.data.delete(key);
   }

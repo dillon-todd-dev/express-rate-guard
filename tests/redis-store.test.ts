@@ -28,6 +28,12 @@ function createMockRedis() {
         return count;
       },
     ),
+    set: vi.fn(
+      async (key: string, value: number, _ex: string, _ttl: number) => {
+        data.set(key, String(value));
+        return 'OK';
+      },
+    ),
     _data: data,
     _expiry: expiry,
   };
@@ -96,6 +102,19 @@ describe('RedisStore', () => {
     it('should call redis get with the correct key', async () => {
       await store.get('test-key');
       expect(mockRedis.get).toHaveBeenCalledWith('test-key');
+    });
+  });
+
+  describe('set', () => {
+    it('should call redis set with EX flag', async () => {
+      await store.set('key1', 42, 60);
+      expect(mockRedis.set).toHaveBeenCalledWith('key1', 42, 'EX', 60);
+    });
+
+    it('should store the value retrievable by get', async () => {
+      await store.set('key1', 42, 60);
+      const value = await store.get('key1');
+      expect(value).toBe(42);
     });
   });
 

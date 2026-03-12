@@ -154,7 +154,7 @@ describe('rateLimit', () => {
     const middleware = rateLimit({
       max: 5,
       window: 60,
-      strategy: 'token-bucket' as any,
+      strategy: 'unknown-strategy' as any,
     });
     const req = createMockReq();
     const res = createMockRes();

@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import type { RateLimitOptions } from '@/types';
 import { MemoryStore, RedisStore } from '@/store';
-import { fixedWindow } from '@/strategies/fixed-window';
+import { fixedWindow, slidingWindow, tokenBucket } from '@/strategies';
 
 export { RateLimitOptions } from '@/types';
 
@@ -32,6 +32,10 @@ export function rateLimit(options: RateLimitOptions) {
 
       if (strategy === 'fixed-window') {
         result = await fixedWindow(store, key, max, window);
+      } else if (strategy === 'sliding-window') {
+        result = await slidingWindow(store, key, max, window);
+      } else if (strategy === 'token-bucket') {
+        result = await tokenBucket(store, key, max, window);
       } else {
         return next(new Error(`Unknown strategy: ${strategy}`));
       }

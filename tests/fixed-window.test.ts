@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { fixedWindow } from '@/strategies/fixed-window';
+import { fixedWindow } from '@/strategies';
 import { MemoryStore } from '@/store';
 
 describe('fixedWindow', () => {
