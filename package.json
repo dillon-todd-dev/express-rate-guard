@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "description": "Flexible Express rate limiting middleware with Redis and in-memory support. Supports fixed window, sliding window, and token bucket strategies.",
   "main": "./dist/index.js",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     }
   },
   "files": [
