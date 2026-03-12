@@ -44,7 +44,7 @@ export function rateLimit(options: RateLimitOptions) {
         onLimitReached?.(req, res);
         res.setHeader(
           'Retry-After',
-          Math.ceil((result.resetAt * 1000 - Date.now()) / 1000),
+          Math.ceil(result.resetAt - Math.floor(Date.now()) / 1000),
         );
         res.status(statusCode).json({ error: message });
         return;

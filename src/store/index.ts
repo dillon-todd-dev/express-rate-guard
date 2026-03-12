@@ -1,5 +1,3 @@
-import type { RateLimitInfo } from '@/types';
-
 export interface Store {
   increment(
     key: string,
@@ -19,7 +17,11 @@ interface MemoryEntry {
 }
 
 export class MemoryStore implements Store {
-  private data = new Map<string, MemoryEntry>();
+  private data: Map<string, MemoryEntry>;
+
+  constructor() {
+    this.data = new Map<string, MemoryEntry>();
+  }
 
   async increment(
     key: string,
